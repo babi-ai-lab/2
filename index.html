@@ -1,0 +1,1097 @@
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#1c2b5e">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="description" content="برنامه بدنسازی ۶ روزه با زمان‌بندی ۷۵ دقیقه‌ای">
+  <title>برنامه بدنسازی بهزاد آبان و آذر</title>
+
+  <style>
+    :root {
+      --navy: #1c2b5e;
+      --blue: #304a9c;
+      --gold: #ffd54f;
+      --bg: #f3f5fa;
+      --card: #ffffff;
+      --text: #202947;
+      --muted: #74809c;
+      --border: #e4e8f1;
+      --green: #208765;
+      --shadow: 0 8px 28px rgba(28, 43, 94, .07);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Tahoma, Arial, sans-serif;
+      line-height: 1.8;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button, input { font: inherit; }
+
+    button { cursor: pointer; }
+
+    .app {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 16px 14px 35px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #1c2b5e, #304a9c);
+      color: white;
+      border-radius: 22px;
+      padding: 22px 20px 18px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 160px;
+      height: 160px;
+      left: -65px;
+      top: -75px;
+      border-radius: 50%;
+      background: rgba(255, 213, 79, .12);
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(20px, 5vw, 27px);
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-subtitle {
+      margin: 1px 0 15px;
+      color: #dce4ff;
+      font-size: 13px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 9px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-stat {
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.13);
+      border-radius: 13px;
+      padding: 8px 5px;
+      text-align: center;
+    }
+
+    .hero-stat strong {
+      display: block;
+      font-size: 19px;
+      color: var(--gold);
+      line-height: 1.5;
+    }
+
+    .hero-stat span {
+      display: block;
+      color: #e0e7ff;
+      font-size: 11px;
+    }
+
+    .section-heading {
+      margin: 22px 2px 10px;
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .day-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .day-tab {
+      border: 1px solid var(--border);
+      background: var(--card);
+      border-radius: 13px;
+      padding: 10px 5px;
+      color: var(--text);
+      text-align: center;
+      min-width: 0;
+      transition: .15s ease;
+    }
+
+    .day-tab.active {
+      background: var(--navy);
+      border-color: var(--navy);
+      color: white;
+      box-shadow: 0 5px 14px rgba(28,43,94,.17);
+    }
+
+    .day-tab .day-name {
+      display: block;
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .day-tab .day-type {
+      display: block;
+      font-size: 11px;
+      opacity: .75;
+    }
+
+    .day-tab .day-check {
+      display: block;
+      min-height: 18px;
+      color: var(--green);
+      font-size: 11px;
+      font-weight: bold;
+    }
+
+    .day-tab.active .day-check { color: var(--gold); }
+
+    .progress-card, .content-card, .info-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .progress-card {
+      margin-top: 14px;
+      padding: 15px;
+    }
+
+    .progress-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .progress-number {
+      color: var(--blue);
+      direction: ltr;
+      white-space: nowrap;
+    }
+
+    .progress-track {
+      height: 9px;
+      background: #e9edf6;
+      border-radius: 20px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #304a9c, #ffd54f);
+      border-radius: 20px;
+      transition: width .25s ease;
+    }
+
+    .progress-caption {
+      margin-top: 7px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .session-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 22px 2px 10px;
+    }
+
+    .session-heading h2 {
+      font-size: 18px;
+      margin: 0;
+    }
+
+    .duration-pill {
+      background: #fff3c4;
+      color: #725a00;
+      border-radius: 30px;
+      padding: 5px 11px;
+      white-space: nowrap;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .session-summary {
+      color: var(--muted);
+      font-size: 12px;
+      margin: -3px 2px 13px;
+    }
+
+    .timeline {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 13px;
+      margin-bottom: 15px;
+    }
+
+    .timeline-title {
+      font-weight: bold;
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+
+    .timeline-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 9px 0;
+      font-size: 12px;
+    }
+
+    .timeline-label {
+      min-width: 105px;
+      color: var(--text);
+    }
+
+    .timeline-bar {
+      height: 8px;
+      flex: 1;
+      background: #edf0f7;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .timeline-bar span {
+      display: block;
+      height: 100%;
+      border-radius: 20px;
+      background: var(--blue);
+    }
+
+    .timeline-time {
+      color: var(--muted);
+      min-width: 38px;
+      text-align: left;
+      direction: rtl;
+    }
+
+    .exercise-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .exercise-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      padding: 15px;
+      box-shadow: var(--shadow);
+    }
+
+    .exercise-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .exercise-number {
+      width: 34px;
+      height: 34px;
+      min-width: 34px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 11px;
+      background: #edf1ff;
+      color: var(--navy);
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .exercise-main {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .exercise-name {
+      margin: 0;
+      font-size: 15px;
+      font-weight: bold;
+      line-height: 1.8;
+    }
+
+    .exercise-meta {
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 2px;
+    }
+
+    .exercise-duration {
+      background: #f0f3fa;
+      color: #4c5c86;
+      padding: 4px 7px;
+      border-radius: 9px;
+      font-size: 11px;
+      white-space: nowrap;
+    }
+
+    .exercise-note {
+      font-size: 12px;
+      color: #5d6883;
+      margin: 10px 0 12px;
+    }
+
+    .sets-label {
+      font-size: 12px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .sets-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 7px;
+    }
+
+    .set-box {
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      padding: 8px 3px;
+      text-align: center;
+      background: #fafbfe;
+      cursor: pointer;
+      min-width: 0;
+    }
+
+    .set-box:has(input:checked) {
+      background: #e8f6ef;
+      border-color: #91d1b0;
+    }
+
+    .set-box input {
+      width: 17px;
+      height: 17px;
+      display: block;
+      margin: 0 auto 3px;
+      accent-color: var(--green);
+      cursor: pointer;
+    }
+
+    .set-box span {
+      display: block;
+      font-size: 11px;
+      font-weight: bold;
+    }
+
+    .set-box small {
+      display: block;
+      font-size: 10px;
+      color: var(--muted);
+    }
+
+    .weight-row {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin-top: 13px;
+      flex-wrap: wrap;
+    }
+
+    .weight-row label {
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .weight-input {
+      width: 115px;
+      max-width: 45%;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #fff;
+      color: var(--text);
+      padding: 8px 10px;
+      outline: none;
+      direction: rtl;
+    }
+
+    .weight-input:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(48,74,156,.09);
+    }
+
+    .weight-unit {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .rest-note {
+      background: #f3f5fb;
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-size: 11px;
+      color: #56617d;
+      margin-top: 11px;
+    }
+
+    .info-card {
+      margin-top: 15px;
+      padding: 15px;
+    }
+
+    .info-card h3 {
+      font-size: 14px;
+      margin: 0 0 8px;
+    }
+
+    .info-card ul {
+      padding-right: 19px;
+      margin: 0;
+      font-size: 12px;
+      color: #596580;
+    }
+
+    .info-card li { margin: 5px 0; }
+
+    .footer-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .action-button {
+      border: none;
+      border-radius: 12px;
+      padding: 12px 10px;
+      font-weight: bold;
+      font-size: 13px;
+    }
+
+    .primary-button {
+      background: var(--navy);
+      color: white;
+    }
+
+    .secondary-button {
+      background: white;
+      color: var(--navy);
+      border: 1px solid var(--border);
+    }
+
+    .save-status {
+      text-align: center;
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 13px;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 10px;
+      color: #8a93a9;
+      margin-top: 17px;
+    }
+
+    @media (min-width: 600px) {
+      .app { padding: 24px 20px 40px; }
+      .day-tabs { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+      .hero { padding: 25px; }
+      .exercise-card { padding: 18px; }
+    }
+
+    @media (max-width: 360px) {
+      .exercise-duration { display: none; }
+      .timeline-label { min-width: 88px; }
+      .sets-grid { gap: 4px; }
+      .set-box span { font-size: 10px; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="app">
+    <header class="hero">
+      <h1>برنامه بدنسازی بهزاد آبان و آذر</h1>
+      <p class="hero-subtitle">۶ روز تمرین · هر جلسه ۷۵ دقیقه</p>
+
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <strong>۷۵</strong>
+          <span>دقیقه در هر جلسه</span>
+        </div>
+        <div class="hero-stat">
+          <strong>۶</strong>
+          <span>روز تمرین</span>
+        </div>
+        <div class="hero-stat">
+          <strong>۲–۴</strong>
+          <span>ست برای هر حرکت</span>
+        </div>
+      </div>
+    </header>
+
+    <h2 class="section-heading">روز تمرین را انتخاب کن</h2>
+    <nav class="day-tabs" id="dayTabs" aria-label="روزهای تمرین"></nav>
+
+    <section class="progress-card">
+      <div class="progress-top">
+        <span>پیشرفت تمرین امروز</span>
+        <span class="progress-number" id="progressNumber">۰٪</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="progress-caption" id="progressCaption">۰ از ۰ ست انجام شده</div>
+    </section>
+
+    <div class="session-heading">
+      <h2 id="sessionTitle">شنبه | پوش A</h2>
+      <span class="duration-pill">۷۵ دقیقه</span>
+    </div>
+    <p class="session-summary" id="sessionSummary"></p>
+
+    <section class="timeline">
+      <div class="timeline-title">زمان‌بندی پیشنهادی جلسه</div>
+      <div id="timelineRows"></div>
+    </section>
+
+    <section class="exercise-list" id="exerciseList"></section>
+
+    <section class="info-card">
+      <h3>راهنمای اجرای تمرین</h3>
+      <ul>
+        <li>۸ دقیقه اول را به گرم‌کردن عمومی و ست‌های سبک آماده‌سازی اختصاص بده.</li>
+        <li>برای حرکات اصلی، حدود ۹۰ تا ۱۲۰ ثانیه بین ست‌ها استراحت کن.</li>
+        <li>برای حرکات تک‌مفصلی، حدود ۴۵ تا ۷۵ ثانیه استراحت کن.</li>
+        <li>زمان هر حرکت در برنامه، تخمینی و شامل اجرای ست‌ها و استراحت بین آن‌هاست.</li>
+        <li>۸ دقیقه برای جابه‌جایی، آماده‌کردن وزنه‌ها و استراحت کوتاه بین حرکات در نظر گرفته شده است.</li>
+        <li>۳ دقیقه آخر را به سردکردن و حرکات کششی سبک اختصاص بده.</li>
+        <li>وزنه‌ای انتخاب کن که حرکت را با فرم صحیح انجام بدهی؛ لازم نیست در هر ست تا ناتوانی کامل پیش بروی.</li>
+      </ul>
+    </section>
+
+    <div class="footer-actions">
+      <button class="action-button secondary-button" id="clearDayButton">
+        پاک‌کردن تیک‌های امروز
+      </button>
+      <button class="action-button primary-button" id="nextDayButton">
+        رفتن به روز بعد ←
+      </button>
+    </div>
+
+    <div class="save-status" id="saveStatus">اطلاعات روی همین دستگاه ذخیره می‌شود.</div>
+    <div class="footer">برنامه تمرینی شخصی · برای تمرین ایمن، فرم صحیح را در اولویت قرار بده.</div>
+  </main>
+
+  <script>
+    const STORAGE_KEY = "behdadWorkoutSets_abanAzar_v1";
+
+    const days = [
+      {
+        id: "sat",
+        name: "شنبه",
+        type: "پوش A",
+        focus: "سینه، سرشانه و پشت بازو",
+        exercises: [
+          {
+            name: "پرس سینه هالتر",
+            sets: 4, reps: "۸–۱۲ تکرار", minutes: 11,
+            rest: "۹۰–۱۲۰ ثانیه",
+            note: "میله را کنترل‌شده پایین بیاور؛ برای ست‌های آماده‌سازی وزنه سبک‌تر استفاده کن."
+          },
+          {
+            name: "پرس بالا سینه دمبل",
+            sets: 3, reps: "۱۰–۱۲ تکرار", minutes: 10,
+            rest: "۷۵–۹۰ ثانیه",
+            note: "نیمکت را کمی شیب‌دار تنظیم کن و دمبل‌ها را بدون ضربه حرکت بده."
+          },
+          {
+            name: "پرس سرشانه دمبل نشسته",
+            sets: 3, reps: "۸–۱۲ تکرار", minutes: 10,
+            rest: "۷۵–۹۰ ثانیه",
+            note: "کمر را ثابت نگه دار و دمبل‌ها را در مسیر کنترل‌شده بالا ببر."
+          },
+          {
+            name: "نشر جانب دمبل",
+            sets: 3, reps: "۱۲–۱۵ تکرار", minutes: 9,
+            rest: "۴۵–۶۰ ثانیه",
+            note: "وزنه سبک انتخاب کن و از تاب‌دادن بدن خودداری کن."
+          },
+          {
+            name: "پشت بازو خوابیده با هالتر EZ",
+            sets: 2, reps: "۱۰–۱۲ تکرار", minutes: 8,
+            rest: "۶۰–۷۵ ثانیه",
+            note: "آرنج‌ها را تا جای ممکن ثابت نگه دار."
+          }
+        ]
+      },
+      {
+        id: "sun",
+        name: "یکشنبه",
+        type: "پول A",
+        focus: "پشت، زیربغل و جلو بازو",
+        exercises: [
+          {
+            name: "زیربغل هالتر خم",
+            sets: 4, reps: "۸–۱۲ تکرار", minutes: 12,
+            rest: "۹۰–۱۲۰ ثانیه",
+            note: "کمر را در وضعیت خنثی نگه دار؛ با حرکت تنه وزنه را بالا نکش."
+          },
+          {
+            name: "زیربغل دمبل تک‌دست",
+            sets: 3, reps: "۱۰–۱۲ هر دست", minutes: 11,
+            rest: "۶۰–۷۵ ثانیه",
+            note: "هر دو سمت را با دامنه حرکتی مشابه انجام بده."
+          },
+          {
+            name: "لت سیم‌کش از جلو",
+            sets: 3, reps: "۱۰–۱۲ تکرار", minutes: 10,
+            rest: "۶۰–۷۵ ثانیه",
+            note: "میله را به سمت بالای سینه بکش؛ از پشت گردن پایین نیاور."
+          },
+          {
+            name: "جلو بازو هالتر EZ",
+            sets: 3, reps: "۱۰–۱۲ تکرار", minutes: 10,
+            rest: "۶۰–۷۵ ثانیه",
+            note: "آرنج‌ها را نزدیک بدن نگه دار."
+          },
+          {
+            name: "جلو بازو چکشی دمبل",
+            sets: 2, reps: "۱۰–۱۲ تکرار", minutes: 7,
+            rest: "۴۵–۶۰ ثانیه",
+            note: "مچ‌ها را در راستای ساعد نگه دار."
+          }
+        ]
+      },
+      {
+        id: "mon",
+        name: "دوشنبه",
+        type: "پا A",
+        focus: "چهارسر، همسترینگ، ساق و شکم",
+        exercises: [
+          {
+            name: "اسکوات با وزن بدن یا دمبل",
+            sets: 4, reps: "۱۰–۱۲ تکرار", minutes: 12,
+            rest: "۹۰–۱۲۰ ثانیه",
+            note: "ابتدا بدون وزنه یا با دمبل سبک تمرین کن؛ فقط تا دامنه‌ای برو که فرم صحیح حفظ شود."
+          },
+          {
+            name: "ددلیفت رومانیایی دمبل",
+            sets: 3, reps: "۱۰–۱۲ تکرار", minutes: 11,
+            rest: "۹۰ ثانیه",
+            note: "زانو کمی خم، کمر خنثی و حرکت از مفصل لگن باشد."
+          },
+          {
+            name: "لانج درجا با وزن بدن",
+            sets: 2, reps: "۸–۱۰ هر پا", minutes: 9,
+            rest: "۶۰–۷۵ ثانیه",
+            note: "برای حفظ تعادل در صورت نیاز از تکیه‌گاه استفاده کن."
+          },
+          {
+            name: "پشت پا دستگاه",
+            sets: 3, reps: "۱۰–۱۵ تکرار", minutes: 10,
+            rest: "۶۰–۷۵ ثانیه",
+            note: "وزنه را آرام پایین بیاور و از ضربه استفاده نکن."
+          },
+          {
+            name: "ساق پا ایستاده با دمبل",
+            sets: 3, reps: "۱۲–۱۵ تکرار", minutes: 8,
+            rest: "۴۵–۶۰ ثانیه",
+            note: "در بالا مکث کوتاه کن و پاشنه را با کنترل پایین ببر."
+          },
+          {
+            name: "کرانچ شکم",
+            sets: 3, reps: "۱۲–۱۵ تکرار", minutes: 6,
+            rest: "۴۵–۶۰ ثانیه",
+            note: "گردن را نکش؛ حرکت را با انقباض شکم انجام بده."
+          }
+        ]
+      },
+      {
+        id: "tue",
+        name: "سه‌شنبه",
+        type: "پوش B",
+        focus: "سینه، سرشانه و پشت بازو",
+        exercises: [
+          {
+            name: "پرس سینه هالتر",
+            sets: 4, reps: "۸–۱۲ تکرار", minutes: 12,
+            rest: "۹۰–۱۲۰ ثانیه",
+            note: "با وزنه‌ای تمرین کن که کنترل کامل میله حفظ شود."
+          },
+          {
+            name: "پرس بالا سینه هالتر",
+            sets: 3, reps: "۸–۱۲ تکرار", minutes: 11,
+            rest: "۹۰ ثانیه",
+            note: "شیب نیمکت متوسط باشد و میله کنترل‌شده پایین بیاید."
+          },
+          {
+            name: "پرس سرشانه دمبل نشسته",
+            sets: 3, reps: "۱۰–۱۲ تکرار", minutes: 10,
+            rest: "۷۵–۹۰ ثانیه",
+            note: "از قوس‌دادن بیش از حد کمر خودداری کن."
+          },
+          {
+            name: "فلای سینه دمبل",
+            sets: 2, reps: "۱۲–۱۵ تکرار", minutes: 8,
+            rest: "۶۰ ثانیه",
+            note: "آرنج‌ها کمی خم باشند و کشش شانه بیش از حد نشود."
+          },
+          {
+            name: "پشت بازو خوابیده با هالتر EZ",
+            sets: 3, reps: "۱۰–۱۲ تکرار", minutes: 11,
+            rest: "۶۰–۷۵ ثانیه",
+            note: "وزنه را با کنترل پایین بیاور و آرنج‌ها را ثابت نگه دار."
+          }
+        ]
+      },
+      {
+        id: "wed",
+        name: "چهارشنبه",
+        type: "پول B",
+        focus: "پشت، زیربغل و جلو بازو",
+        exercises: [
+          {
+            name: "زیربغل هالتر خم",
+            sets: 4, reps: "۸–۱۲ تکرار", minutes: 12,
+            rest: "۹۰–۱۲۰ ثانیه",
+            note: "اگر کمر خسته است، وزنه را کم کن و فرم را در اولویت بگذار."
+          },
+          {
+            name: "زیربغل دمبل تک‌دست",
+            sets: 3, reps: "۱۰–۱۲ هر دست", minutes: 11,
+            rest: "۶۰–۷۵ ثانیه",
+            note: "دمبل را به سمت لگن بکش، نه به سمت شانه."
+          },
+          {
+            name: "لت سیم‌کش از جلو",
+            sets: 3, reps: "۱۰–۱۲ تکرار", minutes: 10,
+            rest: "۶۰–۷۵ ثانیه",
+            note: "بدن را بیش از حد به عقب خم نکن."
+          },
+          {
+            name: "جلو بازو هالتر EZ",
+            sets: 3, reps: "۱۰–۱۲ تکرار", minutes: 10,
+            rest: "۶۰–۷۵ ثانیه",
+            note: "بدون تاب‌دادن تنه، حرکت را کنترل کن."
+          },
+          {
+            name: "جلو بازو دمبل روی میز شیب‌دار",
+            sets: 2, reps: "۱۰–۱۲ تکرار", minutes: 7,
+            rest: "۴۵–۶۰ ثانیه",
+            note: "وزنه سبک انتخاب کن و شانه‌ها را عقب نگه دار."
+          }
+        ]
+      },
+      {
+        id: "thu",
+        name: "پنجشنبه",
+        type: "پا B",
+        focus: "پا، باسن، ساق و میان‌تنه",
+        exercises: [
+          {
+            name: "اسکوات با وزن بدن یا دمبل",
+            sets: 4, reps: "۱۰–۱۲ تکرار", minutes: 12,
+            rest: "۹۰–۱۲۰ ثانیه",
+            note: "با وزنه سبک شروع کن و در تمام تکرارها تعادل را حفظ کن."
+          },
+          {
+            name: "هیپ تراست با هالتر",
+            sets: 3, reps: "۱۰–۱۲ تکرار", minutes: 11,
+            rest: "۷۵–۹۰ ثانیه",
+            note: "در بالای حرکت باسن را منقبض کن، بدون اینکه کمر را بیش از حد قوس بدهی."
+          },
+          {
+            name: "ددلیفت رومانیایی دمبل",
+            sets: 3, reps: "۱۰–۱۲ تکرار", minutes: 11,
+            rest: "۹۰ ثانیه",
+            note: "دمبل‌ها نزدیک پاها حرکت کنند و کمر خنثی بماند."
+          },
+          {
+            name: "جلو پا دستگاه",
+            sets: 2, reps: "۱۲–۱۵ تکرار", minutes: 8,
+            rest: "۶۰ ثانیه",
+            note: "وزنه را کنترل‌شده بالا و پایین ببر."
+          },
+          {
+            name: "ساق پا با دمبل",
+            sets: 3, reps: "۱۲–۱۵ تکرار", minutes: 8,
+            rest: "۴۵–۶۰ ثانیه",
+            note: "در تمام دامنه حرکت، تعادل را حفظ کن."
+          },
+          {
+            name: "پلانک",
+            sets: 2, reps: "۲۰–۴۰ ثانیه", minutes: 8,
+            rest: "۴۵–۶۰ ثانیه",
+            note: "بدن را در یک خط نگه دار؛ اگر کمر درد گرفت، حرکت را متوقف کن."
+          }
+        ]
+      }
+    ];
+
+    const timeline = [
+      { label: "گرم‌کردن", minutes: 8, color: "#ffd54f" },
+      { label: "اجرای حرکات", minutes: 56, color: "#304a9c" },
+      { label: "جابه‌جایی و آماده‌سازی", minutes: 8, color: "#8b9ac4" },
+      { label: "سردکردن", minutes: 3, color: "#208765" }
+    ];
+
+    const faDigits = value =>
+      String(value).replace(/\d/g, d => "۰۱۲۳۴۵۶۷۸۹"[Number(d)]);
+
+    let activeDayIndex = 0;
+    let workoutState = loadState();
+
+    function loadState() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        return saved ? JSON.parse(saved) : {};
+      } catch (error) {
+        return {};
+      }
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(workoutState));
+        document.getElementById("saveStatus").textContent =
+          "ذخیره خودکار فعال است؛ اطلاعات روی همین دستگاه نگهداری می‌شود.";
+      } catch (error) {
+        document.getElementById("saveStatus").textContent =
+          "ذخیره‌سازی در این مرورگر در دسترس نیست.";
+      }
+    }
+
+    function getExerciseState(dayId, exerciseIndex) {
+      if (!workoutState[dayId]) workoutState[dayId] = {};
+      if (!workoutState[dayId][exerciseIndex]) {
+        workoutState[dayId][exerciseIndex] = { sets: [], weight: "" };
+      }
+      return workoutState[dayId][exerciseIndex];
+    }
+
+    function isSetDone(dayId, exerciseIndex, setIndex) {
+      const state = getExerciseState(dayId, exerciseIndex);
+      return Boolean(state.sets[setIndex]);
+    }
+
+    function getDayProgress(day) {
+      let total = 0;
+      let completed = 0;
+
+      day.exercises.forEach((exercise, exerciseIndex) => {
+        total += exercise.sets;
+        for (let setIndex = 0; setIndex < exercise.sets; setIndex++) {
+          if (isSetDone(day.id, exerciseIndex, setIndex)) completed++;
+        }
+      });
+
+      return { total, completed };
+    }
+
+    function renderTabs() {
+      const tabs = document.getElementById("dayTabs");
+      tabs.innerHTML = "";
+
+      days.forEach((day, index) => {
+        const progress = getDayProgress(day);
+        const complete = progress.completed === progress.total;
+
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "day-tab" + (index === activeDayIndex ? " active" : "");
+        button.innerHTML = `
+          <span class="day-name">${day.name}</span>
+          <span class="day-type">${day.type}</span>
+          <span class="day-check">${complete ? "✓ کامل شد" :
+            progress.completed ? faDigits(progress.completed) + " ست انجام شد" : "شروع نشده"}</span>
+        `;
+        button.addEventListener("click", () => {
+          activeDayIndex = index;
+          render();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+        tabs.appendChild(button);
+      });
+    }
+
+    function renderTimeline() {
+      const container = document.getElementById("timelineRows");
+      container.innerHTML = "";
+
+      timeline.forEach(item => {
+        const row = document.createElement("div");
+        row.className = "timeline-row";
+        row.innerHTML = `
+          <span class="timeline-label">${item.label}</span>
+          <span class="timeline-bar">
+            <span style="width:${(item.minutes / 56) * 100}%;background:${item.color}"></span>
+          </span>
+          <span class="timeline-time">${faDigits(item.minutes)} دقیقه</span>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    function renderExercises(day) {
+      const container = document.getElementById("exerciseList");
+      container.innerHTML = "";
+
+      day.exercises.forEach((exercise, exerciseIndex) => {
+        const exerciseState = getExerciseState(day.id, exerciseIndex);
+        const card = document.createElement("article");
+        card.className = "exercise-card";
+
+        const setsHtml = Array.from({ length: exercise.sets }, (_, setIndex) => {
+          const checked = isSetDone(day.id, exerciseIndex, setIndex);
+          return `
+            <label class="set-box">
+              <input
+                type="checkbox"
+                data-exercise="${exerciseIndex}"
+                data-set="${setIndex}"
+                ${checked ? "checked" : ""}
+                aria-label="ست ${setIndex + 1} ${exercise.name}"
+              >
+              <span>ست ${faDigits(setIndex + 1)}</span>
+              <small>${exercise.reps}</small>
+            </label>
+          `;
+        }).join("");
+
+        card.innerHTML = `
+          <div class="exercise-top">
+            <div class="exercise-number">${faDigits(exerciseIndex + 1)}</div>
+            <div class="exercise-main">
+              <h3 class="exercise-name">${exercise.name}</h3>
+              <div class="exercise-meta">${faDigits(exercise.sets)} ست · ${exercise.reps}</div>
+            </div>
+            <span class="exercise-duration">${faDigits(exercise.minutes)} دقیقه</span>
+          </div>
+
+          <p class="exercise-note">${exercise.note}</p>
+
+          <div class="sets-label">ست‌های انجام‌شده را تیک بزن</div>
+          <div class="sets-grid">${setsHtml}</div>
+
+          <div class="weight-row">
+            <label for="weight-${day.id}-${exerciseIndex}">وزنه استفاده‌شده:</label>
+            <input
+              class="weight-input"
+              id="weight-${day.id}-${exerciseIndex}"
+              type="text"
+              inputmode="decimal"
+              autocomplete="off"
+              placeholder="مثلاً ۱۰"
+              value="${escapeAttribute(exerciseState.weight || "")}"
+              data-weight-exercise="${exerciseIndex}"
+            >
+            <span class="weight-unit">کیلوگرم</span>
+          </div>
+
+          <div class="rest-note">استراحت بین ست‌ها: ${exercise.rest}</div>
+        `;
+
+        card.querySelectorAll('input[type="checkbox"]').forEach(input => {
+          input.addEventListener("change", event => {
+            const exIndex = Number(event.target.dataset.exercise);
+            const setIndex = Number(event.target.dataset.set);
+            const state = getExerciseState(day.id, exIndex);
+            state.sets[setIndex] = event.target.checked;
+            saveState();
+            updateProgress(day);
+            renderTabs();
+          });
+        });
+
+        const weightInput = card.querySelector("[data-weight-exercise]");
+        weightInput.addEventListener("input", event => {
+          const exIndex = Number(event.target.dataset.weightExercise);
+          getExerciseState(day.id, exIndex).weight = event.target.value;
+          saveState();
+        });
+
+        container.appendChild(card);
+      });
+    }
+
+    function escapeAttribute(value) {
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/"/g, "&quot;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    }
+
+    function updateProgress(day) {
+      const progress = getDayProgress(day);
+      const percentage = progress.total
+        ? Math.round(progress.completed / progress.total * 100)
+        : 0;
+
+      document.getElementById("progressNumber").textContent = faDigits(percentage) + "٪";
+      document.getElementById("progressFill").style.width = percentage + "%";
+      document.getElementById("progressCaption").textContent =
+        `${faDigits(progress.completed)} از ${faDigits(progress.total)} ست انجام شده`;
+
+      if (percentage === 100) {
+        document.getElementById("progressCaption").textContent += " · آفرین، تمرین کامل شد!";
+      }
+    }
+
+    function render() {
+      const day = days[activeDayIndex];
+
+      document.getElementById("sessionTitle").textContent =
+        `${day.name} | ${day.type}`;
+      document.getElementById("sessionSummary").textContent =
+        `تمرکز امروز: ${day.focus} · زمان هدف: ۷۵ دقیقه`;
+
+      renderTabs();
+      renderTimeline();
+      renderExercises(day);
+      updateProgress(day);
+    }
+
+    document.getElementById("clearDayButton").addEventListener("click", () => {
+      const day = days[activeDayIndex];
+      const confirmed = window.confirm(
+        `تیک‌های ست‌های ${day.name} پاک شوند؟ وزنه‌های ثبت‌شده باقی می‌مانند.`
+      );
+
+      if (!confirmed) return;
+
+      day.exercises.forEach((exercise, exerciseIndex) => {
+        const state = getExerciseState(day.id, exerciseIndex);
+        state.sets = [];
+      });
+
+      saveState();
+      render();
+    });
+
+    document.getElementById("nextDayButton").addEventListener("click", () => {
+      activeDayIndex = (activeDayIndex + 1) % days.length;
+      render();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    render();
+  </script>
+</body>
+</html>
